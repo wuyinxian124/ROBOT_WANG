@@ -1,5 +1,7 @@
 package com.example.robot;
 
+import com.example.robot1.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -75,6 +77,7 @@ public class FaceActivity extends SurfaceView implements SurfaceHolder. Callback
 		eyery = (mPicHeight/3.95);
 	}
 
+	@Override
 	public void surfaceCreated( SurfaceHolder holder ) {
 		// TODO Auto-generated method stub
 		new Thread(new MyThread()).start();

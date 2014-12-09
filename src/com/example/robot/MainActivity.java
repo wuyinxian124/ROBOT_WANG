@@ -3,7 +3,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.pm.ActivityInfo;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,15 +11,22 @@ import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.WindowManager;
+
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import com.iflytek.cloud.speech.SpeechError;
-import com.iflytek.cloud.speech.SpeechListener;
-import com.iflytek.cloud.speech.SpeechRecognizer;
-import com.iflytek.cloud.speech.SpeechSynthesizer;
-import com.iflytek.cloud.speech.SpeechUser;
-
-import android.app.AlertDialog;
+import com.example.robot1.R;
 import android.graphics.ColorMatrixColorFilter;
 import android.view.View;
 import android.widget.ImageButton;
@@ -118,8 +125,10 @@ public class MainActivity extends Activity{
 		getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN );
 		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		new Thread(new SocketServer1(6300,null)).start();
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		robotFaceView.OnTouch(event);
@@ -166,4 +175,102 @@ public class MainActivity extends Activity{
 		return true;
 	}
 
+}
+
+class SocketServer1 implements Runnable{
+
+	private static int port;
+	private  static ServerSocket ss = null;
+	private static Socket s  = null;
+	private BufferedOutputStream bos = null;
+	
+	private byte byteBuffer[] = new byte[1024];
+	
+	public SocketServer1(int port,OutputStream opsi){
+		SocketServer1.port = port;
+		if(port <=1000)
+			SocketServer1.port = 6300;
+	}
+	@Override
+	public void run() {
+		try {
+			ss = new ServerSocket(port);
+			s = SocketServer1.ss.accept();
+			Log.v("mgs", "连接成功!");
+			ExecutorService threadPool = Executors.newSingleThreadExecutor();
+			int i = 0;
+			DataOutputStream out = null;
+			while (true) {
+/*				OutputStream outsocket = s.getOutputStream();*/
+				final int lala = i++;
+				Future<Object> futures = threadPool
+						.submit(new Callable<Object>() {
+							@Override
+							public Object call() throws Exception {
+
+								// 获取图片
+
+								return new String("hello world" + lala);
+							}
+						});
+
+/*				ByteArrayInputStream inputstream = new ByteArrayInputStream(
+						ObjectToByte(futures.get()));
+				int amount;
+				while ((amount = inputstream.read(byteBuffer)) != -1) {
+					outsocket.write(byteBuffer, 0, amount);
+				}
+				outsocket.flush();
+				outsocket.close();*/
+				
+				 out = new DataOutputStream(
+						s.getOutputStream());
+				out.writeUTF((String) futures.get());
+				
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(s != null)
+					s.close();
+				if (ss != null)
+					ss.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void writeImage (byte[] bytes) throws IOException{
+		
+		bos.write(bytes);
+		bos.flush();
+		bos.close();
+	}
+
+	public byte[] ObjectToByte(java.lang.Object obj) {  
+	    byte[] bytes = null;  
+	    try  {  
+	        //object to bytearray  
+	        ByteArrayOutputStream bo = new ByteArrayOutputStream();  
+	        ObjectOutputStream oo = new ObjectOutputStream(bo);  
+	        oo.writeObject(obj);  
+	  
+	        bytes = bo.toByteArray();  
+	  
+	        bo.close();  
+	        oo.close();      
+	    }  
+	    catch(Exception e){  
+	        System.out.println("translation"+e.getMessage());  
+	        e.printStackTrace();  
+	    }  
+	    return bytes;  
+	}
 }

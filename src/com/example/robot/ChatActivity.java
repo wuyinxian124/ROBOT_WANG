@@ -10,6 +10,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 import com.example.robot.util.JsonParser;
+import com.example.robot1.R;
 import com.iflytek.cloud.speech.RecognizerListener;
 import com.iflytek.cloud.speech.RecognizerResult;
 import com.iflytek.cloud.speech.SpeechConstant;
@@ -176,15 +177,19 @@ public class ChatActivity{
 			}
 		}
 		//开始录音
+		@Override
 		public void onBeginOfSpeech() {
 		}
 		//音量值0~30
+		@Override
 		public void onVolumeChanged(int volume){
 		}
 		//结束录音
+		@Override
 		public void onEndOfSpeech() {
 		} 
 		//扩展用接口
+		@Override
 		public void onEvent(int eventType,int arg1,int arg2,String msg) {
 		}
 	};
@@ -204,26 +209,32 @@ public class ChatActivity{
 	private SynthesizerListener mSynListener = new SynthesizerListener()
 	{
 		//  会话结束回调接口，没有错误时，error 为 null
+		@Override
 		public void onCompleted(SpeechError error) {
 			context.onTtsCompleted();
 		}
 		//  缓冲进度回调
 		//percent 为缓冲进度 0~100，beginPos 为缓冲音频在文本中开始位置，endPos 表示缓冲音
 		//频在文本中结束位置，info 为附加信息。
+		@Override
 		public void onBufferProgress(int progress, int beginPos,int endPos, String info) {
 		}
 		//开始播放
+		@Override
 		public void onSpeakBegin() {
 		}
 		//暂停播放
+		@Override
 		public void onSpeakPaused() {
 		}
 		//播放进度回调
 		//percent 为播放进度 0~100,beginPos 为播放音频在文本中开始位置， endPos 表示播放音频
 		//在文本中结束位置.
+		@Override
 		public void onSpeakProgress(int percent, int beginPos, int endPos) {
 		}
 		//恢复播放回调接口
+		@Override
 		public void onSpeakResumed() {
 		}
 	};

@@ -1,33 +1,18 @@
 package com.example.robot;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ImageFormat;
 import android.graphics.Paint;
 import android.hardware.Camera;
-import android.hardware.Camera.Size;
-import android.os.Bundle;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.List;
 import com.googlecode.javacpp.Loader;
 import com.googlecode.javacv.cpp.opencv_objdetect;
 
 import static com.googlecode.javacv.cpp.opencv_core.*;
-import static com.googlecode.javacv.cpp.opencv_imgproc.*;
 import static com.googlecode.javacv.cpp.opencv_objdetect.*;
-import static com.googlecode.javacv.cpp.opencv_highgui.*;
 
 class FaceDetectView extends View implements Camera.PreviewCallback {
     public static final int SUBSAMPLING_FACTOR = 4;
@@ -57,7 +42,8 @@ class FaceDetectView extends View implements Camera.PreviewCallback {
         storage = CvMemStorage.create();
     }
 
-    public void onPreviewFrame(final byte[] data, final Camera camera) {
+    @Override
+	public void onPreviewFrame(final byte[] data, final Camera camera) {
         try {
             Camera.Size size = camera.getParameters().getPreviewSize();
             processImage(data, size.width, size.height);

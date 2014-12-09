@@ -1,33 +1,13 @@
 package com.example.robot;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ImageFormat;
-import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
-import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.List;
-import com.googlecode.javacpp.Loader;
-import com.googlecode.javacv.cpp.opencv_objdetect;
-
-import static com.googlecode.javacv.cpp.opencv_core.*;
-import static com.googlecode.javacv.cpp.opencv_imgproc.*;
-import static com.googlecode.javacv.cpp.opencv_objdetect.*;
-import static com.googlecode.javacv.cpp.opencv_highgui.*;
 
 class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
     SurfaceHolder mHolder;
@@ -45,7 +25,8 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
-    @SuppressLint("NewApi")
+    @Override
+	@SuppressLint("NewApi")
 	public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, acquire the camera and tell it where
         // to draw.
@@ -71,7 +52,8 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    @Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
         // Surface will be destroyed when we return, so stop the preview.
         // Because the CameraDevice object is not a shared resource, it's very
         // important to release it when the activity is paused.
@@ -114,7 +96,8 @@ class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
         return optimalSize;
     }
 
-    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+    @Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         // Now thatvb the size is known, set up the camera parameters and begin
         // the preview.
         Camera.Parameters parameters = mCamera.getParameters();
