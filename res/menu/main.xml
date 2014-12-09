@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@string/camera_visible" android:orderInCategory="100" android:showAsAction="never" android:title="@string/camera_visible" android:checkable="true" android:checked="true"></item>
+    <item android:id="@string/about_us" android:orderInCategory="101" android:title="@string/about_us"></item>
+
+</menu>

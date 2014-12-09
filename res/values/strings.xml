@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ROBOT_FACE</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="text_login_fail">登录失败</string>
+    <string name="text_iat_stop">停止</string>
+    <string name="text_iat">开始</string>
+    <string name="app_id">5327b16f</string>
+    <string name="camera_visible">摄像头</string>
+    <string name="about_us">关于我们</string>
+
+</resources>
